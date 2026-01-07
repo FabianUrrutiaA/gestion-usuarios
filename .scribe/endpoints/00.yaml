@@ -1,0 +1,504 @@
+name: 'Gestión de Usuarios'
+description: |-
+
+  APIs para gestionar usuarios del sistema
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/login
+    metadata:
+      custom: []
+      groupName: 'Gestión de Usuarios'
+      groupDescription: |-
+
+        APIs para gestionar usuarios del sistema
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Login de usuario'
+      description: 'Autentica un usuario y retorna un token de acceso Bearer.'
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      email:
+        custom: []
+        name: email
+        description: 'El email del usuario.'
+        required: true
+        example: juan@example.com
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      password:
+        custom: []
+        name: password
+        description: 'La contraseña del usuario.'
+        required: true
+        example: password123
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      email: juan@example.com
+      password: password123
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "access_token": "1|abc123xyz...",
+            "token_type": "Bearer",
+            "expires_in": 3600,
+            "user": {
+              "id": 1,
+              "name": "Juan Pérez",
+              "email": "juan@example.com",
+              "saldo": "1000.00"
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 401
+        content: |-
+          {
+            "message": "Credenciales incorrectas"
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/obtenerUsuarios
+    metadata:
+      custom: []
+      groupName: 'Gestión de Usuarios'
+      groupDescription: |-
+
+        APIs para gestionar usuarios del sistema
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Obtener todos los usuarios'
+      description: 'Retorna un listado de todos los usuarios registrados.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_BEARER_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "usuarios": [
+              {
+                "id": 1,
+                "name": "Juan Pérez",
+                "email": "juan@example.com",
+                "saldo": "1000.00",
+                "created_at": "2026-01-07T00:00:00.000000Z"
+              }
+            ]
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/obtenerUsuario/{id}'
+    metadata:
+      custom: []
+      groupName: 'Gestión de Usuarios'
+      groupDescription: |-
+
+        APIs para gestionar usuarios del sistema
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Obtener usuario por ID'
+      description: 'Retorna los detalles de un usuario específico.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_BEARER_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'ID del usuario.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "usuario": {
+              "id": 1,
+              "name": "Juan Pérez",
+              "email": "juan@example.com",
+              "saldo": "1000.00"
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Usuario no encontrado"
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/crearUsuario
+    metadata:
+      custom: []
+      groupName: 'Gestión de Usuarios'
+      groupDescription: |-
+
+        APIs para gestionar usuarios del sistema
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Crear nuevo usuario'
+      description: 'Registra un nuevo usuario en el sistema.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_BEARER_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        custom: []
+        name: name
+        description: 'Nombre completo del usuario.'
+        required: true
+        example: 'Juan Pérez'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      email:
+        custom: []
+        name: email
+        description: 'Email único del usuario.'
+        required: true
+        example: juan@example.com
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      password:
+        custom: []
+        name: password
+        description: 'Contraseña (mínimo 8 caracteres).'
+        required: true
+        example: password123
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      saldo:
+        custom: []
+        name: saldo
+        description: 'optional Saldo inicial del usuario.'
+        required: false
+        example: '1000.50'
+        type: numeric
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+    cleanBodyParameters:
+      name: 'Juan Pérez'
+      email: juan@example.com
+      password: password123
+      saldo: '1000.50'
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 201
+        content: |-
+          {
+            "message": "Usuario creado exitosamente",
+            "user": {
+              "id": 5,
+              "name": "Juan Pérez",
+              "email": "juan@example.com",
+              "saldo": "1000.50"
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "errors": {
+              "email": ["El email ya está registrado"]
+            }
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - PUT
+    uri: 'api/editarUsuario/{id}'
+    metadata:
+      custom: []
+      groupName: 'Gestión de Usuarios'
+      groupDescription: |-
+
+        APIs para gestionar usuarios del sistema
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Actualizar usuario'
+      description: 'Actualiza la información de un usuario existente.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_BEARER_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'ID del usuario a actualizar.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        custom: []
+        name: name
+        description: 'optional Nuevo nombre del usuario.'
+        required: false
+        example: 'Juan Pérez Actualizado'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      email:
+        custom: []
+        name: email
+        description: 'optional Nuevo email del usuario.'
+        required: false
+        example: nuevo@example.com
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      password:
+        custom: []
+        name: password
+        description: 'optional Nueva contraseña.'
+        required: false
+        example: newpassword123
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      saldo:
+        custom: []
+        name: saldo
+        description: 'optional Nuevo saldo.'
+        required: false
+        example: '2000.00'
+        type: numeric
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      name: 'Juan Pérez Actualizado'
+      email: nuevo@example.com
+      password: newpassword123
+      saldo: '2000.00'
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "message": "Usuario actualizado exitosamente",
+            "user": {
+              "id": 1,
+              "name": "Juan Pérez Actualizado",
+              "email": "nuevo@example.com",
+              "saldo": "2000.00"
+            }
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - DELETE
+    uri: 'api/eliminarUsuario/{id}'
+    metadata:
+      custom: []
+      groupName: 'Gestión de Usuarios'
+      groupDescription: |-
+
+        APIs para gestionar usuarios del sistema
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Eliminar usuario'
+      description: 'Elimina permanentemente un usuario del sistema.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_BEARER_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'ID del usuario a eliminar.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "message": "Usuario eliminado exitosamente"
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+            "message": "Usuario no encontrado"
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+    controller: null
+    method: null
+    route: null

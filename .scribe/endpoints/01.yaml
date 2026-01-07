@@ -1,0 +1,297 @@
+name: 'Gestión de Transferencias'
+description: |-
+
+  APIs para gestionar transferencias entre usuarios con validaciones de seguridad
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/crearTransferencia
+    metadata:
+      custom: []
+      groupName: 'Gestión de Transferencias'
+      groupDescription: |-
+
+        APIs para gestionar transferencias entre usuarios con validaciones de seguridad
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Crear transferencia'
+      description: |-
+        Realiza una transferencia entre dos usuarios. Incluye validaciones de:
+        - Saldo suficiente del emisor
+        - Límite diario de 5,000 USD
+        - Prevención de duplicados (5 minutos)
+        - No permitir transferencias a sí mismo
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_BEARER_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      id_emisor:
+        custom: []
+        name: id_emisor
+        description: 'ID del usuario que envía dinero.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      id_receptor:
+        custom: []
+        name: id_receptor
+        description: 'ID del usuario que recibe dinero (debe ser diferente al emisor).'
+        required: true
+        example: 2
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      monto:
+        custom: []
+        name: monto
+        description: 'Monto a transferir (máximo 5000 por transferencia).'
+        required: true
+        example: '100.50'
+        type: numeric
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      id_emisor: 1
+      id_receptor: 2
+      monto: '100.50'
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 201
+        content: |-
+          {
+            "message": "Transferencia realizada exitosamente",
+            "transferencia": {
+              "id": 10,
+              "id_emisor": 1,
+              "id_receptor": 2,
+              "monto": "100.50",
+              "hash_unico": "abc123...",
+              "created_at": "2026-01-07T12:00:00.000000Z"
+            },
+            "nuevo_saldo_emisor": "900.50",
+            "nuevo_saldo_receptor": "100.50"
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 400
+        content: |-
+          {
+            "message": "Saldo insuficiente para realizar la transferencia",
+            "saldo_actual": "50.00",
+            "monto_solicitado": "100.00"
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 400
+        content: |-
+          {
+            "message": "Has excedido el límite diario de transferencias de 5,000 USD",
+            "total_transferido_hoy": "4500.00",
+            "monto_solicitado": "600.00",
+            "limite_disponible": "500.00"
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 409
+        content: |-
+          {
+            "message": "Esta transferencia ya fue procesada recientemente. Transferencia duplicada detectada."
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "errors": {
+              "monto": ["El monto máximo por transferencia es de 5,000 USD"]
+            }
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/exportarTransferenciasCSV
+    metadata:
+      custom: []
+      groupName: 'Gestión de Transferencias'
+      groupDescription: |-
+
+        APIs para gestionar transferencias entre usuarios con validaciones de seguridad
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Exportar transferencias a CSV'
+      description: |-
+        Descarga todas las transferencias en formato CSV con punto y coma (;) como delimitador.
+        El archivo incluye: ID, Emisor, Receptor, Monto, Fecha y Hash único.
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_BEARER_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '[Binary CSV file download]'
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/totalTransferidoPorUsuario
+    metadata:
+      custom: []
+      groupName: 'Gestión de Transferencias'
+      groupDescription: |-
+
+        APIs para gestionar transferencias entre usuarios con validaciones de seguridad
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Total transferido por usuario'
+      description: 'Consulta optimizada que retorna el total de dinero transferido por cada usuario emisor.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_BEARER_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "total_transferido_por_usuario": [
+              {
+                "usuario_id": 1,
+                "usuario_nombre": "Juan Pérez",
+                "usuario_email": "juan@example.com",
+                "total_transferido": "5000.00"
+              }
+            ]
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/promedioMontoPorUsuario
+    metadata:
+      custom: []
+      groupName: 'Gestión de Transferencias'
+      groupDescription: |-
+
+        APIs para gestionar transferencias entre usuarios con validaciones de seguridad
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Promedio de monto por usuario'
+      description: 'Consulta optimizada que calcula el promedio de monto transferido por cada usuario.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_BEARER_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "promedio_monto_por_usuario": [
+              {
+                "usuario_id": 1,
+                "usuario_nombre": "Juan Pérez",
+                "usuario_email": "juan@example.com",
+                "promedio_monto": "250.00",
+                "total_transferencias": 20
+              }
+            ]
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+    controller: null
+    method: null
+    route: null

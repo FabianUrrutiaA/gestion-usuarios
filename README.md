@@ -1,59 +1,344 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# API - Gestión de Usuarios y Transferencias
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+API REST desarrollada con Laravel 11 para la gestión de usuarios y transferencias bancarias con validaciones de seguridad avanzadas.
 
-## About Laravel
+## Características Principales
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **CRUD completo de usuarios** con autenticación
+- **Sistema de transferencias** entre usuarios
+- **Validaciones robustas**: saldo suficiente, límites diarios, prevención de duplicados
+- **Autenticación** con Laravel Sanctum (Bearer Token)
+- **Exportación de datos** a CSV
+- **Reportes y estadísticas** con consultas optimizadas
+- **Testing completo** (12 tests unitarios)
+- **Documentación interactiva** con Scribe
+- **CHECK constraints** a nivel de base de datos
+- **Transacciones atómicas** con rollback automático
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Tecnologías Utilizadas
 
-## Learning Laravel
+- **Framework:** Laravel 11
+- **Base de datos:** MySQL 8.0+
+- **Autenticación:** Laravel Sanctum
+- **Testing:** PHPUnit
+- **Documentación:** Laravel Scribe
+- **PHP:** 8.2+
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Instalación
 
-## Laravel Sponsors
+### 1. Clonar el repositorio
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+git clone https://github.com/FabianUrrutiaA/gestion-usuarios.git
+cd gestion-usuarios
+```
 
-### Premium Partners
+### 2. Instalar dependencias
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+```bash
+composer install
+```
 
-## Contributing
+### 3. Configurar variables de entorno
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+cp .env.example .env
+```
 
-## Code of Conduct
+Edita el archivo `.env` con tus credenciales de base de datos:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+**Si usas XAMPP:**
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=gestion_usuarios
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-## Security Vulnerabilities
+**Si usas otro servidor:**
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=gestion_usuarios
+DB_USERNAME=tu_usuario
+DB_PASSWORD=tu_contraseña
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 4. Generar clave de aplicación
 
-## License
+```bash
+php artisan key:generate
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 5. Crear base de datos
+
+Abre phpMyAdmin (http://localhost/phpmyadmin) o tu cliente MySQL y ejecuta:
+
+```sql
+CREATE DATABASE gestion_usuarios CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE gestion_usuarios_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+
+### 6. Ejecutar migraciones
+
+```bash
+php artisan migrate
+```
+
+### 7. Iniciar el servidor
+
+```bash
+php artisan serve
+```
+
+La API estará disponible en: `http://localhost:8000`
+
+---
+
+## Documentación de la API
+
+### Acceso a la documentación
+
+Visita: **http://localhost:8000/docs**
+
+
+### Archivos adicionales
+
+- **Colección Postman:** Importa `postman_collection.json`
+
+---
+
+## Autenticación
+
+### 1. Login
+
+```bash
+POST /api/login
+Content-Type: application/json
+
+{
+  "email": "usuario@example.com",
+  "password": "tu_contraseña"
+}
+```
+
+**Respuesta:**
+```json
+{
+  "access_token": "1|abc123xyz...",
+  "token_type": "Bearer",
+  "expires_in": 3600,
+  "user": {
+    "id": 1,
+    "name": "Juan Pérez",
+    "email": "juan@example.com",
+    "saldo": "1000.00"
+  }
+}
+```
+
+### 2. Usar el token
+
+Incluye el token en el header de tus peticiones:
+
+```bash
+Authorization: Bearer 1|abc123xyz...
+```
+
+---
+
+## 📍 Endpoints Principales
+
+### **Usuarios**
+
+| Método | Endpoint | Descripción | Auth |
+|--------|----------|-------------|------|
+| POST | `/api/login` | Login de usuario |
+| GET | `/api/obtenerUsuarios` | Listar todos los usuarios |
+| GET | `/api/obtenerUsuario/{id}` | Obtener usuario por ID |
+| POST | `/api/crearUsuario` | Crear nuevo usuario |
+| PUT | `/api/editarUsuario/{id}` | Actualizar usuario |
+| DELETE | `/api/eliminarUsuario/{id}` | Eliminar usuario |
+
+### **Transferencias**
+
+| Método | Endpoint | Descripción | Auth |
+|--------|----------|-------------|------|
+| POST | `/api/crearTransferencia` | Crear transferencia |
+| GET | `/api/exportarTransferenciasCSV` | Exportar a CSV |
+| GET | `/api/totalTransferidoPorUsuario` | Total transferido por cada usuario |
+| GET | `/api/promedioMontoPorUsuario` | Promedio de monto por usuario |
+---
+
+## Validaciones de Seguridad
+
+### Transferencias
+
+- **Saldo suficiente:** Valida que el emisor tenga fondos
+- **Límite diario:** Máximo 5,000 USD por día por usuario
+- **Límite por transacción:** Máximo 5,000 USD por transferencia
+- **No auto-transferencias:** No se permite transferir a sí mismo
+- **Prevención de duplicados:** Hash único con ventana de 5 minutos
+- **Transacciones atómicas:** Rollback automático en caso de error
+
+---
+
+## 🧪 Testing
+
+### Ejecutar todos los tests
+
+```bash
+php artisan test
+```
+
+### Tests implementados (12 tests)
+
+**Usuarios:**
+- Puede crear usuario
+- No puede crear usuario con email duplicado
+- Puede hacer login
+- Falla login con credenciales incorrectas
+
+**Transferencias:**
+- Puede crear transferencia válida
+- No puede transferir sin saldo suficiente
+- No puede exceder límite diario de 5,000 USD
+- No puede transferir monto mayor a 5,000 USD
+- No puede transferir a sí mismo
+- Detecta transferencias duplicadas
+
+### Configuración de testing
+
+Los tests usan MySQL (no SQLite). Base de datos de testing: `gestion_usuarios_test`
+
+```bash
+# Crear base de datos de testing
+CREATE DATABASE gestion_usuarios_test;
+```
+
+---
+
+## Exportación CSV
+
+### Formato del archivo
+
+- **Delimitador:** Punto y coma (`;`)
+- **Codificación:** UTF-8 con BOM
+- **Columnas:**
+  - ID
+  - Emisor ID
+  - Emisor Nombre
+  - Receptor ID
+  - Receptor Nombre
+  - Monto
+  - Fecha de Creación
+  - Hash Único
+
+### Ejemplo
+
+```csv
+ID;"Emisor ID";"Emisor Nombre";"Receptor ID";"Receptor Nombre";Monto;"Fecha de Creación";"Hash Único"
+1;1;"Juan Pérez";2;"María López";100.50;"2026-01-07 12:00:00";abc123...
+```
+
+---
+
+## Optimización de Consultas
+
+### Consultas implementadas
+
+1. **Total transferido por usuario:**
+   - Usa `SUM()` y `GROUP BY`
+   - Eager loading con `with()`
+
+2. **Promedio de monto por usuario:**
+   - Usa `AVG()` y `COUNT()`
+   - Optimizado para grandes volúmenes
+
+3. **Estadísticas generales:**
+   - Una sola query con agregaciones múltiples
+   - `SUM()`, `AVG()`, `MAX()`, `MIN()`, `COUNT()`
+
+---
+
+## Estructura del Proyecto
+
+```
+gestion-usuarios/
+├── app/
+│   ├── Http/
+│   │   └── Controllers/
+│   │       ├── UserController.php
+│   │       └── TransferenciaController.php
+│   └── Models/
+│       ├── User.php
+│       └── Transferencia.php
+├── database/
+│   └── migrations/
+│       ├── 0001_01_01_000000_create_users_table.php
+│       └── 2026_01_07_011653_add_hash_unico_to_transferencia_table.php
+├── routes/
+│   └── api.php
+├── tests/
+│   └── Feature/
+│       ├── UserTest.php
+│       └── TransferenciaTest.php
+├── config/
+│   └── scribe.php
+├── public/
+│   └── docs/
+│       └── index.html
+└── README.md
+```
+
+---
+
+### Error: "Base table or view not found"
+
+```bash
+php artisan migrate:fresh
+```
+
+### Tests fallan
+
+Verifica que existe la base de datos de testing:
+```sql
+CREATE DATABASE gestion_usuarios_test;
+```
+
+---
+
+## Autor
+
+**Fabián Alejandro Urrutia Avendaño**
+- Email: fabian.urrutia.aven@gmail.com
+- GitHub: @FabianUrrutiaA
+
+---
+
+## Licencia
+
+Este proyecto fue desarrollado como parte de una prueba técnica.
+
+---
+
+## Futuras Mejoras del proyecto
+
+- [ ] Implementar paginación en listados
+- [ ] Agregar filtros de búsqueda
+- [ ] Notificaciones por email de transferencias
+- [ ] Dashboard con gráficos estadísticos
+
+---
+
+**Fecha de creación:** Enero 2026  
+**Versión:** 1.0.0  
+**Laravel:** 11.x  
+**PHP:** 8.2+
